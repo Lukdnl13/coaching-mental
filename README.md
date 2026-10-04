@@ -1,5 +1,7 @@
 # Coaching Mental
 
+Application : https://coaching-mental.lucasdaniel1108.chatgpt.site
+
 Application mobile web installable, inspirée de la maquette Coaching Mental : notes privées, matrice de décision, roue des valeurs et statistiques descriptives.
 
 ## Fonctionnalités
@@ -52,7 +54,9 @@ pnpm exec tsc --noEmit
 pnpm build
 ```
 
-Le projet Supabase de l’application hébergée est créé, la migration appliquée et les variables de connexion configurées. Les tests SQL d’isolation entre propriétaires passent et l’audit de sécurité Supabase ne remonte aucune alerte. Les URL de confirmation/récupération et la délivrabilité des e-mails restent à finaliser et vérifier dans le tableau de bord Supabase. L’absence de configuration sur une autre installation propose uniquement une démonstration clairement signalée.
+Le projet Supabase de l’application hébergée est créé, la migration appliquée et les variables de connexion configurées. Les tests SQL d’isolation entre propriétaires passent et l’audit de sécurité Supabase ne remonte aucune alerte. Les URL de confirmation et de récupération sont configurées vers l’application. L’inscription par e-mail et la confirmation sont activées, avec un mot de passe de 12 caractères minimum. Le workflow GitHub Actions a réussi : installation figée, tests de décision, TypeScript et compilation.
+
+L’envoi utilise encore le SMTP de test Supabase, réservé aux adresses des membres de l’organisation et sans garantie de délivrabilité. Pour le premier essai, utiliser l’adresse du compte Supabase propriétaire. Un SMTP personnalisé est nécessaire pour ouvrir les inscriptions à d’autres utilisateurs. Le parcours réel de création du compte et réception de l’e-mail reste à valider par l’utilisateur. Documentation : https://supabase.com/docs/guides/auth/auth-smtp L’absence de configuration sur une autre installation propose uniquement une démonstration clairement signalée.
 
 ## Installation iPhone
 
