@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {evaluate,criterionScore,demoData,newDecision} from '../lib/coaching.ts';
+const criterion=(scores,weight=1,required=false,threshold=3)=>({id:crypto.randomUUID(),name:'Test',scores,weight,required,threshold,children:[]});
+const decision=(criteria)=>({id:'test',title:'Test',options:['A','B'],criteria,updated_at:''});
+test('pondère et normalise les poids sans imposer 100',()=>{let e=evaluate(decision([criterion([5,1],2),criterion([2,4],1)]));assert.equal(e.results[0].score,4);assert.equal(e.results[1].score,2);assert.deepEqual(e.winners,[0]);});
+test('un indispensable élimine une option malgré sa moyenne élevée',()=>{let e=evaluate(decision([criterion([5,3],99),criterion([2,4],1,true,3)]));assert(e.results[0].score>e.results[1].score);assert.deepEqual(e.winners,[1]);assert.equal(e.results[0].blocked.length,1)});
+test('sous-critères moyennés à poids égaux et sans double comptage',()=>{let c={...criterion([5,5]),children:[{scores:[1,5]},{scores:[3,1]}]};assert.equal(criterionScore(c,0),2);assert.equal(criterionScore(c,1),3)});
+test('zéro poids ou aucune donnée ne recommande rien',()=>{assert.equal(evaluate(newDecision()).ready,false);assert.deepEqual(evaluate(decision([criterion([5,0],0)])).winners,[])});
+test('égalité et seuil exact sont conservés',()=>{let e=evaluate(decision([criterion([3,3],1,true,3)]));assert.deepEqual(e.winners,[0,1]);assert.equal(e.results[0].blocked.length,0)});
+test('aucun choix éligible reste sans recommandation',()=>{assert.deepEqual(evaluate(decision([criterion([1,2],1,true,4)])).winners,[])});
+test('les chiffres de démonstration sont calculés à partir des notes',()=>{let e=evaluate(demoData().decisions[0]);assert.equal(e.results[0].score,3);assert.equal(e.results[1].score,4.6)});
