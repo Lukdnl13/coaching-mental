@@ -1,4 +1,12 @@
-export type TableCriterion = {id: string; name: string; children: {id: string; name: string}[]};
+export type TableSide = 'for' | 'against';
+export type TableCriterion = {id: string; name: string; side?: TableSide; children: {id: string; name: string}[]};
+// Older saved criteria appear in Pour without changing their names or children.
+export const criterionSide = (criterion: TableCriterion): TableSide => criterion.side ?? 'for';
+export function moveToColumn(criteria: TableCriterion[], id: string, side: TableSide): TableCriterion[] {
+  const criterion = criteria.find(c => c.id === id);
+  if (!criterion || criterionSide(criterion) === side) return criteria;
+  return [...criteria.filter(c => c.id !== id), {...criterion, side}];
+}
 export type GeneralTable = {id: string; title: string; criteria: TableCriterion[]; updated_at: string};
 export const newGeneralTable = (): GeneralTable => ({id: crypto.randomUUID(), title: '', criteria: [], updated_at: new Date().toISOString()});
 
@@ -11,7 +19,9 @@ export function moveTableRow(criteria: TableCriterion[], source: string, target:
   const result = criteria.map(c => ({...c, children: [...c.children]}));
   if (criteria[from].id === source) {
     if (from === to) return criteria;
-    result.splice(to, 0, result.splice(from, 1)[0]);
+    const [criterion] = result.splice(from, 1);
+    if (criterionSide(criterion) !== criterionSide(criteria[to])) criterion.side = criterionSide(criteria[to]);
+    result.splice(to, 0, criterion);
   } else {
     if (from !== to && result[to].children.length >= 50) return criteria;
     const index = result[from].children.findIndex(s => s.id === source);
@@ -25,6 +35,7 @@ export function moveTableRow(criteria: TableCriterion[], source: string, target:
 export function tableValidation(table: GeneralTable): string | null {
   if (!table.title.trim()) return 'Donne un titre à ton tableau.';
   if (table.title.length > 200 || table.criteria.length > 100) return 'Ce tableau dépasse la taille autorisée.';
+  if (table.criteria.some(c => c.side !== undefined && c.side !== 'for' && c.side !== 'against')) return 'Choisis une colonne valide pour chaque critère.';
   if (table.criteria.some(c => !c.name.trim() || c.name.length > 150 || c.children.length > 50 || c.children.some(s => !s.name.trim() || s.name.length > 150))) return 'Nomme chaque critère et sous-critère avant d’enregistrer.';
   return null;
 }

@@ -8,7 +8,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 
 - Notes : création, modification, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
-- Tableaux généralistes : critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
+- Tableaux généralistes : deux colonnes **Pour — obligatoire** et **Contre — rédhibitoire**, avec critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères et colonnes, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
 - Valeurs : 3 à 12 valeurs personnalisables, notes 0–10, roue SVG dynamique, sous-dimensions et réflexions.
 - Connexion Supabase par e-mail et mot de passe, inscription, confirmation e-mail, récupération du mot de passe et déconnexion.
 - Export JSON, manifeste PWA, icônes iPhone, page hors connexion.
@@ -68,3 +68,5 @@ Ouvrir l’adresse HTTPS dans Safari → Partager → Sur l’écran d’accueil
 Application React/TypeScript avec Vinext, sortie Cloudflare Worker. Les scripts fournis construisent le serveur et les ressources statiques. La migration Supabase est indépendante du déploiement de l’interface.
 
 Le fichier `.openai/hosting.json` contient l’identité de l’hébergement Sites. Le dépôt GitHub public sert à conserver et modifier le code ; il ne rend pas les données Supabase publiques et ne déploie pas automatiquement l’application.
+
+Les anciens tableaux sans colonne apparaissent dans **Pour**. Le bouton « Vers Contre » déplace un critère avec tous ses sous-critères. La colonne est conservée dans le JSON `criteria` existant, sans migration ni modification des comparaisons.
