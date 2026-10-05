@@ -6,6 +6,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 
 ## Fonctionnalités
 
+- Actions à réaliser : tâches personnelles avec 12 icônes au choix, précisions facultatives, cases à cocher et filtres À faire / Réalisées / Toutes. Modification, suppression et sauvegarde privée ; le changement d’état est enregistré immédiatement après confirmation du serveur.
 - Notes : création, modification, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
 - Tableaux généralistes : deux colonnes **Pour — obligatoire** et **Contre — rédhibitoire**, avec critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères et colonnes, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
@@ -39,7 +40,7 @@ Aucune clé réelle n’est incluse dans ce dépôt. La clé publishable/anon es
 
 ## Données et synchronisation
 
-Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, `cm_progress`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
+Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, `cm_progress`, `cm_tasks`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
 
 L’enregistrement se fait avec le bouton **Enregistrer**, pas en arrière-plan. Les brouillons restent ouverts en cas d’échec. Le service worker ne met en cache aucune réponse API ni donnée personnelle. Hors connexion, la page ouverte garde ses données en mémoire ; une ouverture à froid montre une page expliquant comment se reconnecter.
 
@@ -78,3 +79,5 @@ Les anciens tableaux sans colonne apparaissent dans **Pour**. Le bouton « Vers 
 `cm_progress` conserve le dernier état enregistré de chaque journée (Europe/Paris). Des triggers sur les cinq tables métier actualisent notes, décisions, tableaux, compétences, actions et scores des valeurs après chaque écriture. Les brouillons ne changent pas les statistiques. Une base réelle est créée à l’installation de la migration ; aucun historique antérieur n’est reconstitué. Les jours sans écriture ne créent pas de points. Le navigateur recharge les 90 derniers points après sauvegarde et lors de l’actualisation du profil ; l’export JSON inclut ces points.
 
 Les nombres de notes/décisions/tableaux décrivent les éléments conservés, pas un cumul de créations. Les moyennes de valeurs et le taux d’actions peuvent varier si leur composition change. La démonstration utilise un historique fictif explicitement indiqué. Les fonctions de suivi sont SECURITY INVOKER et respectent les règles RLS du propriétaire ; les comptes ne peuvent consulter ni écrire les points d’un autre utilisateur.
+
+Les actions personnelles sont indépendantes des actions du plan professionnel. Les courbes « Actions du projet pro » restent consacrées au plan ; l’onglet Actions affiche son propre compteur. Les nouvelles tâches sont incluses dans l’export JSON.

@@ -9,7 +9,7 @@ import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from '@/compon
 import {ArrowRight,ChartNoAxesColumnIncreasing,RefreshCw} from 'lucide-react';
 import {averageValues,metricChange,metricValue,periodHistory,type ProgressMetric,type ProgressSnapshot} from '@/lib/progress';
 
-const metrics:Record<ProgressMetric,{label:string;color:string}>={average:{label:'Moyenne des valeurs / 10',color:'#397a4c'},skills_count:{label:'Compétences listées',color:'#537ca4'},actions_done:{label:'Actions réalisées',color:'#8b68a0'},notes_count:{label:'Notes conservées',color:'#c18b3f'},decisions_count:{label:'Décisions conservées',color:'#4b9397'},tables_count:{label:'Tableaux conservés',color:'#ab7360'}};
+const metrics:Record<ProgressMetric,{label:string;color:string}>={average:{label:'Moyenne des valeurs / 10',color:'#397a4c'},skills_count:{label:'Compétences listées',color:'#537ca4'},actions_done:{label:'Actions du projet pro réalisées',color:'#8b68a0'},notes_count:{label:'Notes conservées',color:'#c18b3f'},decisions_count:{label:'Décisions conservées',color:'#4b9397'},tables_count:{label:'Tableaux conservés',color:'#ab7360'}};
 const shortDate=(day:string)=>new Date(day+'T12:00:00Z').toLocaleDateString('fr-FR',{day:'numeric',month:'short',timeZone:'UTC'});
 const number=(n:number|null)=>n===null?'—':n.toLocaleString('fr-FR',{maximumFractionDigits:1});
 const signed=(n:number|null)=>n===null?'Pas encore de comparaison':`${n>0?'+':''}${number(n)}`;
