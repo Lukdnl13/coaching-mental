@@ -2,7 +2,7 @@
 
 Application : https://coaching-mental.lucasdaniel1108.chatgpt.site
 
-Application mobile web installable, inspirée de la maquette Coaching Mental : notes privées, matrice de décision, roue des valeurs et statistiques descriptives.
+Application mobile web installable, inspirée de la maquette Coaching Mental : notes privées, matrice de décision, roue des valeurs et suivi quotidien des statistiques.
 
 ## Fonctionnalités
 
@@ -12,6 +12,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 - Compétences et projet pro : inventaire de compétences et qualités, catégories personnalisables, objectif professionnel, sélection des points d’appui et actions à cocher. Sauvegarde privée, export JSON et protection des brouillons.
 - Valeurs : 3 à 12 valeurs personnalisables, notes 0–10, roue SVG dynamique, sous-dimensions et réflexions.
 - Connexion Supabase par e-mail et mot de passe, inscription, confirmation e-mail, récupération du mot de passe et déconnexion.
+- Statistiques : aperçu sous les boutons de l’accueil, courbes sur 7/30/90 jours, comparaison des valeurs et suivi des compétences/actions.
 - Export JSON, manifeste PWA, icônes iPhone, page hors connexion.
 - Démonstration explicite en mémoire uniquement. Les essais disparaissent au rechargement et ne sont pas importés dans un compte.
 
@@ -38,7 +39,7 @@ Aucune clé réelle n’est incluse dans ce dépôt. La clé publishable/anon es
 
 ## Données et synchronisation
 
-Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
+Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, `cm_progress`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
 
 L’enregistrement se fait avec le bouton **Enregistrer**, pas en arrière-plan. Les brouillons restent ouverts en cas d’échec. Le service worker ne met en cache aucune réponse API ni donnée personnelle. Hors connexion, la page ouverte garde ses données en mémoire ; une ouverture à froid montre une page expliquant comment se reconnecter.
 
@@ -71,3 +72,9 @@ Application React/TypeScript avec Vinext, sortie Cloudflare Worker. Les scripts 
 Le fichier `.openai/hosting.json` contient l’identité de l’hébergement Sites. Le dépôt GitHub public sert à conserver et modifier le code ; il ne rend pas les données Supabase publiques et ne déploie pas automatiquement l’application.
 
 Les anciens tableaux sans colonne apparaissent dans **Pour**. Le bouton « Vers Contre » déplace un critère avec tous ses sous-critères. La colonne est conservée dans le JSON `criteria` existant, sans migration ni modification des comparaisons.
+
+## Historique statistique
+
+`cm_progress` conserve le dernier état enregistré de chaque journée (Europe/Paris). Des triggers sur les cinq tables métier actualisent notes, décisions, tableaux, compétences, actions et scores des valeurs après chaque écriture. Les brouillons ne changent pas les statistiques. Une base réelle est créée à l’installation de la migration ; aucun historique antérieur n’est reconstitué. Les jours sans écriture ne créent pas de points. Le navigateur recharge les 90 derniers points après sauvegarde et lors de l’actualisation du profil ; l’export JSON inclut ces points.
+
+Les nombres de notes/décisions/tableaux décrivent les éléments conservés, pas un cumul de créations. Les moyennes de valeurs et le taux d’actions peuvent varier si leur composition change. La démonstration utilise un historique fictif explicitement indiqué. Les fonctions de suivi sont SECURITY INVOKER et respectent les règles RLS du propriétaire ; les comptes ne peuvent consulter ni écrire les points d’un autre utilisateur.
