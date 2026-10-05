@@ -1,0 +1,6 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {demoCareer,removeCareerCategory,removeCareerSkill,validateCareer} from '../lib/career.ts';
+test('supprimer une catégorie conserve les compétences et leurs liens avec le plan',()=>{const v=demoCareer();const category=v.skills[0].category_id;const result=removeCareerCategory(v,category);assert.equal(result.skills.length,v.skills.length);assert.equal(result.skills[0].category_id,null);assert.deepEqual(result.plan,v.plan);assert.notEqual(v.skills[0].category_id,null);assert.equal(validateCareer(result),null);});
+test('supprimer une compétence retire son lien dans le plan mais conserve les actions',()=>{const v=demoCareer();const result=removeCareerSkill(v,v.skills[0].id);assert.equal(result.skills.length,v.skills.length-1);assert(!result.plan.skill_ids.includes(v.skills[0].id));assert.deepEqual(result.plan.actions,v.plan.actions);assert.equal(validateCareer(result),null);});
+test('validation détecte catégories orphelines, noms dupliqués et liens de projet invalides',()=>{let v=demoCareer();assert.equal(validateCareer(v),null);v.skills[0].category_id='missing';assert(validateCareer(v));v=demoCareer();v.categories[1].name=' '+v.categories[0].name.toUpperCase()+' ';assert(validateCareer(v));v=demoCareer();v.plan.skill_ids.push('missing');assert(validateCareer(v));});

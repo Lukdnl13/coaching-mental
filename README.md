@@ -9,6 +9,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 - Notes : création, modification, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
 - Tableaux généralistes : deux colonnes **Pour — obligatoire** et **Contre — rédhibitoire**, avec critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères et colonnes, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
+- Compétences et projet pro : inventaire de compétences et qualités, catégories personnalisables, objectif professionnel, sélection des points d’appui et actions à cocher. Sauvegarde privée, export JSON et protection des brouillons.
 - Valeurs : 3 à 12 valeurs personnalisables, notes 0–10, roue SVG dynamique, sous-dimensions et réflexions.
 - Connexion Supabase par e-mail et mot de passe, inscription, confirmation e-mail, récupération du mot de passe et déconnexion.
 - Export JSON, manifeste PWA, icônes iPhone, page hors connexion.
@@ -37,7 +38,7 @@ Aucune clé réelle n’est incluse dans ce dépôt. La clé publishable/anon es
 
 ## Données et synchronisation
 
-Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
+Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
 
 L’enregistrement se fait avec le bouton **Enregistrer**, pas en arrière-plan. Les brouillons restent ouverts en cas d’échec. Le service worker ne met en cache aucune réponse API ni donnée personnelle. Hors connexion, la page ouverte garde ses données en mémoire ; une ouverture à froid montre une page expliquant comment se reconnecter.
 
