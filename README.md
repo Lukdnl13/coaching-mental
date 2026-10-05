@@ -8,6 +8,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 
 - Notes : création, modification, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
+- Tableaux généralistes : critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
 - Valeurs : 3 à 12 valeurs personnalisables, notes 0–10, roue SVG dynamique, sous-dimensions et réflexions.
 - Connexion Supabase par e-mail et mot de passe, inscription, confirmation e-mail, récupération du mot de passe et déconnexion.
 - Export JSON, manifeste PWA, icônes iPhone, page hors connexion.
@@ -26,7 +27,7 @@ pnpm dev
 ## Configuration Supabase
 
 1. Créer ou sélectionner le projet Supabase.
-2. Appliquer `supabase/migrations/202610040001_coaching.sql` via Supabase CLI ou SQL Editor **une seule fois**.
+2. Appliquer les fichiers de `supabase/migrations/` dans leur ordre chronologique via Supabase CLI ou SQL Editor **une seule fois**.
 3. Configurer `SUPABASE_URL` et `SUPABASE_PUBLISHABLE_KEY` dans l’environnement serveur d’hébergement.
 4. Dans Authentication → URL Configuration, définir l’origine de production comme Site URL et l’ajouter aux Redirect URLs. Ajouter aussi l’origine locale utilisée.
 5. Activer Email / Password et la confirmation des e-mails ; régler une longueur minimale de 12 caractères. Configurer un fournisseur SMTP de production pour les confirmations et réinitialisations.
@@ -36,7 +37,7 @@ Aucune clé réelle n’est incluse dans ce dépôt. La clé publishable/anon es
 
 ## Données et synchronisation
 
-Tables `cm_notes`, `cm_decisions`, `cm_wheels`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
+Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
 
 L’enregistrement se fait avec le bouton **Enregistrer**, pas en arrière-plan. Les brouillons restent ouverts en cas d’échec. Le service worker ne met en cache aucune réponse API ni donnée personnelle. Hors connexion, la page ouverte garde ses données en mémoire ; une ouverture à froid montre une page expliquant comment se reconnecter.
 
@@ -49,12 +50,12 @@ S’il existe des sous-critères, leur moyenne à poids égaux remplace la note 
 ## Vérification
 
 ```sh
-node --experimental-strip-types --test tests/decision.test.mjs
+node --experimental-strip-types --test tests/*.test.mjs
 pnpm exec tsc --noEmit
 pnpm build
 ```
 
-Le projet Supabase de l’application hébergée est créé, la migration appliquée et les variables de connexion configurées. Les tests SQL d’isolation entre propriétaires passent et l’audit de sécurité Supabase ne remonte aucune alerte. Les URL de confirmation et de récupération sont configurées vers l’application. L’inscription par e-mail et la confirmation sont activées, avec un mot de passe de 12 caractères minimum. Le workflow GitHub Actions a réussi : installation figée, tests de décision, TypeScript et compilation.
+Le projet Supabase de l’application hébergée est créé, la migration appliquée et les variables de connexion configurées. Les tests SQL d’isolation entre propriétaires passent et l’audit Supabase ne remonte aucune alerte sur les tables et leurs règles d’accès. Il signale toutefois que la [protection contre les mots de passe compromis](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) est désactivée. Les URL de confirmation et de récupération sont configurées vers l’application. L’inscription par e-mail et la confirmation sont activées, avec un mot de passe de 12 caractères minimum. Le workflow GitHub Actions a réussi : installation figée, tests de décision, TypeScript et compilation.
 
 L’envoi utilise encore le SMTP de test Supabase, réservé aux adresses des membres de l’organisation et sans garantie de délivrabilité. Pour le premier essai, utiliser l’adresse du compte Supabase propriétaire. Un SMTP personnalisé est nécessaire pour ouvrir les inscriptions à d’autres utilisateurs. Le parcours réel de création du compte et réception de l’e-mail reste à valider par l’utilisateur. Documentation : https://supabase.com/docs/guides/auth/auth-smtp L’absence de configuration sur une autre installation propose uniquement une démonstration clairement signalée.
 

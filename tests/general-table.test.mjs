@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {moveTableRow,newGeneralTable,tableValidation} from '../lib/general-table.ts';
+const rows=()=>[{id:'a',name:'A',children:[{id:'a1',name:'A1'},{id:'a2',name:'A2'}]},{id:'b',name:'B',children:[{id:'b1',name:'B1'}]}];
+test('déplace un critère avec ses enfants sans modifier le brouillon précédent',()=>{const before=rows();const after=moveTableRow(before,'a','b');assert.deepEqual(after.map(x=>x.id),['b','a']);assert.deepEqual(after[1].children,before[0].children);assert.deepEqual(before,rows());});
+test('réordonne les sous-critères dans les deux sens',()=>{const r=moveTableRow(rows(),'a1','a2');assert.deepEqual(r[0].children.map(x=>x.id),['a2','a1']);assert.deepEqual(moveTableRow(r,'a1','a2'),rows());});
+test('rattache un sous-critère à un autre parent sans perte',()=>{const r=moveTableRow(rows(),'a1','b');assert.deepEqual(r[0].children.map(x=>x.id),['a2']);assert.deepEqual(r[1].children.map(x=>x.id),['b1','a1']);});
+test('dépose un sous-critère sur un enfant d’un autre parent',()=>{const r=moveTableRow(rows(),'a1','b1');assert.deepEqual(r[1].children.map(x=>x.id),['a1','b1']);});
+test('ignore les cibles invalides et le déplacement du parent sur ses propres enfants',()=>{const r=rows();assert.equal(moveTableRow(r,'a','a1'),r);assert.equal(moveTableRow(r,'absent','b'),r);assert.equal(moveTableRow(r,'a1','a1'),r);});
+test('le tableau n’exige ni option ni score et valide les noms',()=>{const t=newGeneralTable();assert(tableValidation(t));t.title='Mes repères';assert.equal(tableValidation(t),null);t.criteria=rows();assert.equal(tableValidation(t),null);t.criteria[0].children[0].name=' ';assert(tableValidation(t));assert(!('options' in t));});

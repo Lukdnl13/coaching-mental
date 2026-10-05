@@ -16,6 +16,6 @@ jobs:
       - name: Enable package manager
         run: corepack enable
       - run: pnpm install --frozen-lockfile
-      - run: node --experimental-strip-types --test tests/decision.test.mjs
+      - run: node --experimental-strip-types --test tests/*.test.mjs
       - run: pnpm exec tsc --noEmit
       - run: pnpm build
