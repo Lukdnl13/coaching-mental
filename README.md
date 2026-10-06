@@ -10,7 +10,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 - Notes : création, modification, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
 - Tableaux généralistes : deux colonnes **Pour — obligatoire** et **Contre — rédhibitoire**, avec critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères et colonnes, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
-- Compétences et projet pro : inventaire de compétences et qualités, catégories personnalisables, objectif professionnel, sélection des points d’appui et actions à cocher. Sauvegarde privée, export JSON et protection des brouillons.
+- Compétences et projet pro : inventaire de compétences et qualités, catégories personnalisables avec couleurs au choix (repères partagés dans les listes, groupes et points d’appui), objectif professionnel, sélection des points d’appui et actions à cocher. Sauvegarde privée, export JSON et protection des brouillons.
 - Valeurs : 3 à 12 valeurs personnalisables, notes 0–10, roue SVG dynamique, sous-dimensions et réflexions.
 - Connexion Supabase par e-mail et mot de passe, inscription, confirmation e-mail, récupération du mot de passe et déconnexion.
 - Statistiques : aperçu sous les boutons de l’accueil, courbes sur 7/30/90 jours, comparaison des valeurs et suivi des compétences/actions.
