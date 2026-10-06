@@ -6,6 +6,8 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 
 ## Fonctionnalités
 
+- Mes objectifs : plusieurs objectifs privés, chacun avec une montagne et 1 à 20 étapes numérotées. Création, modification, ordre des étapes, suppression, cases à cocher, progression et sommet atteint. Les étapes se cochent dans tout ordre ; la prochaine étape est la première non réalisée. Sauvegarde immédiate du changement d’état, brouillons protégés, export JSON.
+
 - Actions à réaliser : tâches personnelles avec 12 icônes au choix, précisions facultatives, cases à cocher et filtres À faire / Réalisées / Toutes. Modification, suppression et sauvegarde privée ; le changement d’état est enregistré immédiatement après confirmation du serveur.
 - Notes : création, modification, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
@@ -40,7 +42,7 @@ Aucune clé réelle n’est incluse dans ce dépôt. La clé publishable/anon es
 
 ## Données et synchronisation
 
-Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, `cm_progress`, `cm_tasks`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
+Tables `cm_notes`, `cm_decisions`, `cm_tables`, `cm_wheels`, `cm_career`, `cm_progress`, `cm_tasks`, `cm_goals`, avec RLS sur `auth.uid() = user_id`, accès anonyme révoqué. Les enregistrements portent le propriétaire connecté. L’interface n’annonce un enregistrement qu’après confirmation du serveur. Les modifications concurrentes utilisent `updated_at` pour éviter d’écraser silencieusement une modification faite ailleurs. Actualiser depuis le profil recharge les dernières données.
 
 L’enregistrement se fait avec le bouton **Enregistrer**, pas en arrière-plan. Les brouillons restent ouverts en cas d’échec. Le service worker ne met en cache aucune réponse API ni donnée personnelle. Hors connexion, la page ouverte garde ses données en mémoire ; une ouverture à froid montre une page expliquant comment se reconnecter.
 
@@ -81,3 +83,5 @@ Les anciens tableaux sans colonne apparaissent dans **Pour**. Le bouton « Vers 
 Les nombres de notes/décisions/tableaux décrivent les éléments conservés, pas un cumul de créations. Les moyennes de valeurs et le taux d’actions peuvent varier si leur composition change. La démonstration utilise un historique fictif explicitement indiqué. Les fonctions de suivi sont SECURITY INVOKER et respectent les règles RLS du propriétaire ; les comptes ne peuvent consulter ni écrire les points d’un autre utilisateur.
 
 Les actions personnelles sont indépendantes des actions du plan professionnel. Les courbes « Actions du projet pro » restent consacrées au plan ; l’onglet Actions affiche son propre compteur. Les nouvelles tâches sont incluses dans l’export JSON.
+
+Les objectifs disposent de leur propre progression, indépendante des statistiques du projet professionnel. Le schéma montagne et la liste numérotée affichent les mêmes étapes. Validation TypeScript, compilation et tests SQL effectués ; vérification visuelle sur navigateur non disponible dans cet environnement.
