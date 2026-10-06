@@ -9,7 +9,7 @@ Application mobile web installable, inspirée de la maquette Coaching Mental : n
 - Mes objectifs : plusieurs objectifs privés, chacun avec une montagne et 1 à 20 étapes numérotées. Création, modification, ordre des étapes, suppression, cases à cocher, progression et sommet atteint. Les étapes se cochent dans tout ordre ; la prochaine étape est la première non réalisée. Sauvegarde immédiate du changement d’état, brouillons protégés, export JSON.
 
 - Actions à réaliser : tâches personnelles avec 12 icônes au choix, précisions facultatives, cases à cocher et filtres À faire / Réalisées / Toutes. Modification, suppression et sauvegarde privée ; le changement d’état est enregistré immédiatement après confirmation du serveur.
-- Notes : création, modification, suppression, catégories et recherche.
+- Notes : ouverture en carte de lecture agrandie sans champ de saisie ni clavier ; bouton Modifier pour éditer, retour à la lecture après enregistrement. Création, suppression, catégories et recherche.
 - Décisions : 2 à 4 options, critères pondérés, sous-critères, seuils éliminatoires, sauvegarde de plusieurs décisions.
 - Tableaux généralistes : deux colonnes **Pour — obligatoire** et **Contre — rédhibitoire**, avec critères et sous-critères sans notes ni comparaison ; glisser-déposer tactile, déplacement entre critères et colonnes, flèches accessibles, sauvegarde et export. Jusqu’à 100 critères et 50 sous-critères par critère.
 - Compétences et projet pro : inventaire de compétences et qualités, catégories personnalisables avec couleurs au choix (repères partagés dans les listes, groupes et points d’appui), objectif professionnel, sélection des points d’appui et actions à cocher. Sauvegarde privée, export JSON et protection des brouillons.
